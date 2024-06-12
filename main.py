@@ -71,67 +71,68 @@ if option == '한국어 익숙해지기':
   """
   
   if sentence:
-    USER_PROMPT = f"""
-    User's desired element to learn : {learnTopic},
-    User wants to learn that element with the following sentence : "{sentence}"
-    """.strip()
-    
-    EXAMPLE_USER_PROMPT = f"""
-    User wants to learn '{learnTopic}' of korean with example sentences realted to '{field}'.
-    """
-    
-    response = client_o.chat.completions.create(
-      model='gpt-4o',
-      messages=[
-        {'role': 'system', 'content': KOREAN_TEACHER_SYSTEM_PROMPT},
-        {'role': 'user', 'content': USER_PROMPT}
-      ],
-      response_format={'type': 'json_object'}
-    ).choices[0].message.content 
-    
-    examplesRelatedToField = client_o.chat.completions.create(
-      model='gpt-4o',
-      messages=[
-        {'role': 'system', 'content': EXAMPLE_PROVIDER},
-        {'role': 'user', 'content': EXAMPLE_USER_PROMPT}
-      ],
-      response_format={'type': 'json_object'}
-    ).choices[0].message.content
-    
-    honorofics_examples = {
-  "저는 선생님께 질문이 있습니다.": "This sentence uses the honorific particle '께' to show respect to the teacher when saying 'I have a question for you.'",
-  "할아버지, 진지 잡수셨어요?": "This sentence uses the honorific verb '잡수시다' instead of the regular verb '먹다' to respectfully ask the grandfather if he has eaten.",
-  "어머니, 어디 가십니까?": "This sentence uses the honorific verb ending '-십니까' to politely ask the mother where she is going.",
-  "교수님, 강의 잘 들었습니다.": "This sentence uses the honorific title '교수님' to show respect to the professor and express that the lecture was well-received.",
-  "사장님, 회의 시간이 언제입니까?": "This sentence uses the honorific title '사장님' to respectfully ask the company president when the meeting time is.",
-  "선배님, 조언 감사드립니다.": "This sentence uses the honorific title '선배님' and the verb '감사드리다' to express gratitude for the advice given by a senior colleague.",
-  "아버지, 차 한 잔 드시겠습니까?": "This sentence uses the honorific verb '드시다' to politely offer the father a cup of tea.",
-  "김 과장님, 프로젝트 진행 상황이 어떻습니까?": "This sentence uses the honorific title '과장님' and the verb ending '-습니까' to respectfully inquire about the project progress from Manager Kim.",
-  "박사님, 연구 결과에 대해 설명해 주시겠습니까?": "This sentence uses the honorific title '박사님' and the verb '주시다' to politely request an explanation about the research results from a doctor.",
-  "이모님, 오늘 저녁 식사는 제가 대접하겠습니다.": "This sentence uses the honorific title '이모님' and the verb '대접하다' to express the speaker's intention to treat their aunt to dinner."
-    }
-    
-    response_dict = json.loads(response)
-    ex_sentence = response_dict['sentence']
-    ex_explanation = response_dict['explanation']
-    
-    examples_dict = json.loads(examplesRelatedToField)
-    
-    with st.expander('입력한 문장과 관련된 내용을 확인하세요!'):
-      st.markdown(f'Sentence in English : {sentence}')
-      st.markdown(f'Korean sentence : {ex_sentence}')
-      st.markdown('Explanation to the above sentence.')
-      st.markdown(ex_explanation)
+    with st.spinner('학습 자료가 만들어지고 있어요!'):
+      USER_PROMPT = f"""
+      User's desired element to learn : {learnTopic},
+      User wants to learn that element with the following sentence : "{sentence}"
+      """.strip()
       
-    with st.expander('입력하신 분야와 관련된 예문들을 확인해보세요!'):
-      for key, value in examples_dict:
-        st.markdown(f"""
-                    {key} 문장에 대한 설명 : {value}
-                    """)
-    
-    with st.expander(f'{learnTopic} 관련 예시 더 많이 확인하기!'):
-      if learnTopic == '존댓말':
-        for key, value in honorofics_examples.items():
+      EXAMPLE_USER_PROMPT = f"""
+      User wants to learn '{learnTopic}' of korean with example sentences realted to '{field}'.
+      """
+      
+      response = client_o.chat.completions.create(
+        model='gpt-4o',
+        messages=[
+          {'role': 'system', 'content': KOREAN_TEACHER_SYSTEM_PROMPT},
+          {'role': 'user', 'content': USER_PROMPT}
+        ],
+        response_format={'type': 'json_object'}
+      ).choices[0].message.content 
+      
+      examplesRelatedToField = client_o.chat.completions.create(
+        model='gpt-4o',
+        messages=[
+          {'role': 'system', 'content': EXAMPLE_PROVIDER},
+          {'role': 'user', 'content': EXAMPLE_USER_PROMPT}
+        ],
+        response_format={'type': 'json_object'}
+      ).choices[0].message.content
+      
+      honorofics_examples = {
+    "저는 선생님께 질문이 있습니다.": "This sentence uses the honorific particle '께' to show respect to the teacher when saying 'I have a question for you.'",
+    "할아버지, 진지 잡수셨어요?": "This sentence uses the honorific verb '잡수시다' instead of the regular verb '먹다' to respectfully ask the grandfather if he has eaten.",
+    "어머니, 어디 가십니까?": "This sentence uses the honorific verb ending '-십니까' to politely ask the mother where she is going.",
+    "교수님, 강의 잘 들었습니다.": "This sentence uses the honorific title '교수님' to show respect to the professor and express that the lecture was well-received.",
+    "사장님, 회의 시간이 언제입니까?": "This sentence uses the honorific title '사장님' to respectfully ask the company president when the meeting time is.",
+    "선배님, 조언 감사드립니다.": "This sentence uses the honorific title '선배님' and the verb '감사드리다' to express gratitude for the advice given by a senior colleague.",
+    "아버지, 차 한 잔 드시겠습니까?": "This sentence uses the honorific verb '드시다' to politely offer the father a cup of tea.",
+    "김 과장님, 프로젝트 진행 상황이 어떻습니까?": "This sentence uses the honorific title '과장님' and the verb ending '-습니까' to respectfully inquire about the project progress from Manager Kim.",
+    "박사님, 연구 결과에 대해 설명해 주시겠습니까?": "This sentence uses the honorific title '박사님' and the verb '주시다' to politely request an explanation about the research results from a doctor.",
+    "이모님, 오늘 저녁 식사는 제가 대접하겠습니다.": "This sentence uses the honorific title '이모님' and the verb '대접하다' to express the speaker's intention to treat their aunt to dinner."
+      }
+      
+      response_dict = json.loads(response)
+      ex_sentence = response_dict['sentence']
+      ex_explanation = response_dict['explanation']
+      
+      examples_dict = json.loads(examplesRelatedToField)
+      
+      with st.expander('입력한 문장과 관련된 내용을 확인하세요!'):
+        st.markdown(f'Sentence in English : {sentence}')
+        st.markdown(f'Korean sentence : {ex_sentence}')
+        st.markdown('Explanation to the above sentence.')
+        st.markdown(ex_explanation)
+        
+      with st.expander('입력하신 분야와 관련된 예문들을 확인해보세요!'):
+        for key, value in examples_dict.items():
           st.markdown(f"""
-                      '{key}' 문장에 대한 설명 : {value}
+                      {key} 문장에 대한 설명 : {value}
                       """)
+      
+      with st.expander(f'{learnTopic} 관련 예시 더 많이 확인하기!'):
+        if learnTopic == '존댓말':
+          for key, value in honorofics_examples.items():
+            st.markdown(f"""
+                        '{key}' 문장에 대한 설명 : {value}
+                        """)

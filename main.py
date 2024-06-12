@@ -35,6 +35,7 @@ if option == '한국어 익숙해지기':
     '어떤 요소를 학습하시고자 하나요?',
     ['존댓말', '문장의 구성', '몰라요', '다른 요소들도 많겠죠', '그건 차차 생각해봅시다..']
   )
+  field = st.text_input('어떤 분야의 언어로 학습을 하고 싶으신가요?')
   sentence = st.chat_input('어떤 문장을 기반으로 공부하고 싶은지 입력해주세요.')
   KOREAN_TEACHER_SYSTEM_PROMPT = """
   You are a professional Korean teacher tasked with teaching a user about a specific element of the Korean language. The user will provide the element they want to learn about and an example sentence to illustrate it. Your job is to analyze the sentence, modify it if needed to better showcase the element, and provide a detailed explanation to help the user understand how that element works in Korean.
@@ -49,7 +50,7 @@ if option == '한국어 익숙해지기':
 
   First, carefully analyze the sentence the user provided. Determine if it is a suitable example to illustrate the Korean language element they want to learn about. If the sentence works well, leave it as is. If it could be improved to better showcase the element, modify it. Put your final example sentence inside <sentence> tags.
 
-  Next, write a detailed explanation of the Korean language element the user wants to learn about. Aim to write at least a paragraph, using the example sentence to illustrate your points. Explain what the element is, how it is used, any associated grammar points, and give additional examples if helpful. The explanation should be encouraging and easy to understand for a learner. Put the explanation inside <explanation> tags.
+  Next, write a detailed explanation of the Korean language element the user wants to learn about. Aim to write at least a paragraph, using the example sentence to illustrate your points. Explain what the element is, how it is used, any associated grammar points, and give additional examples if helpful. The explanation should be encouraging and easy to understand for a learner. Also, your explanations should focus on explaining Korean sentences using English sentences, as English sentences are more familiar to the user, which means that you should actively use comparisons to English sentences to explain the elements of Korean sentences. Put the explanation inside <explanation> tags.
 
   Your final response should be formatted as a JSON object with following format:
   {
@@ -59,11 +60,25 @@ if option == '한국어 익숙해지기':
   }
   """
   
+  EXAMPLE_PROVIDER = """
+  You are a chatbot that helps users learn a specific element of Korean. To do this, you need to input the element of Korean that the user wants to learn, the field that the user wants to use to learn the element, and then provide five example sentences that the user can use to help the user learn the element. 
+
+  Your answer should be in the JSON object with the following format: 
+  {
+    "Sentence1": "Explanation_About_That_Sentence"},
+    "Sentence2": "Explanation_About_That_Sentence"}, ...
+  }
+  """
+  
   if sentence:
     USER_PROMPT = f"""
     User's desired element to learn : {learnTopic},
     User wants to learn that element with the following sentence : "{sentence}"
     """.strip()
+    
+    EXAMPLE_USER_PROMPT = f"""
+    User wants to learn '{learnTopic}' of korean with example sentences realted to '{field}'.
+    """
     
     response = client_o.chat.completions.create(
       model='gpt-4o',
@@ -73,6 +88,15 @@ if option == '한국어 익숙해지기':
       ],
       response_format={'type': 'json_object'}
     ).choices[0].message.content 
+    
+    examplesRelatedToField = client_o.chat.completions.create(
+      model='gpt-4o',
+      messages=[
+        {'role': 'system', 'content': EXAMPLE_PROVIDER},
+        {'role': 'user', 'content': EXAMPLE_USER_PROMPT}
+      ],
+      response_format={'type': 'json_object'}
+    ).choices[0].message.content
     
     honorofics_examples = {
   "저는 선생님께 질문이 있습니다.": "This sentence uses the honorific particle '께' to show respect to the teacher when saying 'I have a question for you.'",
@@ -91,12 +115,21 @@ if option == '한국어 익숙해지기':
     ex_sentence = response_dict['sentence']
     ex_explanation = response_dict['explanation']
     
-    with st.expander('아래를 확인해서 공부하세요!'):
-      st.markdown(f'###{ex_sentence}')
+    examples_dict = json.loads(examplesRelatedToField)
+    
+    with st.expander('입력한 문장과 관련된 내용을 확인하세요!'):
+      st.markdown(f'Sentence in English : {sentence}')
+      st.markdown(f'Korean sentence : {ex_sentence}')
       st.markdown('Explanation to the above sentence.')
       st.markdown(ex_explanation)
+      
+    with st.expander('입력하신 분야와 관련된 예문들을 확인해보세요!'):
+      for key, value in examples_dict:
+        st.markdown(f"""
+                    {key} 문장에 대한 설명 : {value}
+                    """)
     
-    with st.expander(f'{learnTopic} 관련 예시 더 확인하기!'):
+    with st.expander(f'{learnTopic} 관련 예시 더 많이 확인하기!'):
       if learnTopic == '존댓말':
         for key, value in honorofics_examples.items():
           st.markdown(f"""

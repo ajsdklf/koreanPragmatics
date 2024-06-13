@@ -58,6 +58,8 @@ if option == '한국어 익숙해지기':
     "explanation": "<your_detailed_explanation_about_user's_desired_learning_element>",
     "examples": "<additional_examples_user_could_use_to_enhance_their_understanding>"
   }
+  
+  Your answer needs to be in English.
   """
   
   EXAMPLE_PROVIDER = """
@@ -245,14 +247,20 @@ if option == '한국어 익숙해지기':
       with st.expander('입력하신 분야와 관련된 예문들을 확인해보세요!'):
         for example in examples_dict['examples']:
           st.markdown(f"""
+                      -----------------------------------------------
                       Korean Sentence : {example['korean_sentence']} \n 
                       English Sentence : {example['english_sentence']} \n 
                       Explanation : {example['explanation']} \n 
+                      -----------------------------------------------
                       """)
       
       with st.expander(f'{learnTopic} 관련 예시 더 많이 확인하기!'):
         if learnTopic == '존댓말':
-          for key, value in honorofics_examples.items():
+          for example in honorofics_examples:
             st.markdown(f"""
-                        '{key}' 문장에 대한 설명 : {value}
+                      -----------------------------------------------
+                      Korean Sentence : {example['korean_sentence']} \n 
+                      English Sentence : {example['english_sentence']} \n 
+                      Explanation : {example['explanation']} \n 
+                      -----------------------------------------------
                         """)

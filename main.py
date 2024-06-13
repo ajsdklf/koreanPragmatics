@@ -35,7 +35,7 @@ if option == '한국어 익숙해지기':
     '어떤 요소를 학습하시고자 하나요?',
     ['존댓말', '문장의 구성', '몰라요', '다른 요소들도 많겠죠', '그건 차차 생각해봅시다..']
   )
-  field = st.text_input('어떤 분야의 언어로 학습을 하고 싶으신가요?')
+  circumstance = st.text_input('어떤 분야의 언어로 학습을 하고 싶으신가요?')
   sentence = st.chat_input('어떤 문장을 기반으로 공부하고 싶은지 입력해주세요.')
   KOREAN_TEACHER_SYSTEM_PROMPT = """
   You are a professional Korean teacher tasked with teaching a user about a specific element of the Korean language. The user will provide the element they want to learn about and an example sentence to illustrate it. Your job is to analyze the sentence, modify it if needed to better showcase the element, and provide a detailed explanation to help the user understand how that element works in Korean.
@@ -65,16 +65,18 @@ if option == '한국어 익숙해지기':
   
   Your response should consist of a JSON object with the following format:
   {
-    "example": {
-      "korean_sentence": "[example sentence in Korean]",
-      "english_sentence": "[example sentence in English]",
-      "explanation": "[explanation of that example]"
-    },
-    "example": {
-      "korean_sentence": "[example sentence in Korean]",
-      "english_sentence": "[example sentence in English]",
-      "explanation": "[explanation of that example]"
-    },...
+    "examples": [
+      {
+        "korean_sentence": "[example sentence in Korean]",
+        "english_sentence": "[example sentence in English]",
+        "explanation": "[explanation of that example]"
+      },
+      {
+        "korean_sentence": "[example sentence in Korean]",
+        "english_sentence": "[example sentence in English]",
+        "explanation": "[explanation of that example]"
+      },...
+    ]
   }
   
   Followings are some of the examples you should consider:
@@ -99,7 +101,7 @@ if option == '한국어 익숙해지기':
       """.strip()
       
       EXAMPLE_USER_PROMPT = f"""
-      User wants to learn '{learnTopic}' of korean with example sentences realted to '{field}'.
+      User wants to learn '{learnTopic}' of korean with example sentences realted to '{circumstance}'.
       """
       
       response = client_o.chat.completions.create(
@@ -172,6 +174,60 @@ if option == '한국어 익숙해지기':
       "explanation": "This sentence uses the honorific title '이모님' (aunt) and the verb '대접하다' (to treat) to express the speaker's intention to treat their aunt to dinner. '이모님' (aunt) is a respectful way to address one's aunt."
     }
   ]
+      
+      sentence_structure_exmaples = [
+    {
+      "korean_sentence": "저는 아침에 운동을 합니다.",
+      "english_sentence": "I exercise in the morning.",
+      "explanation": "This sentence follows the Subject-Object-Verb (SOV) structure commonly used in Korean. '저는' (I) is the subject, '아침에' (in the morning) is a time expression, and '운동을 합니다' (exercise) is the verb phrase."
+    },
+    {
+      "korean_sentence": "그녀는 한국어를 공부합니다.",
+      "english_sentence": "She studies Korean.",
+      "explanation": "In this SOV structure sentence, '그녀는' (she) is the subject, '한국어를' (Korean) is the object, and '공부합니다' (studies) is the verb."
+    },
+    {
+      "korean_sentence": "우리는 주말에 영화를 봅니다.",
+      "english_sentence": "We watch a movie on the weekend.",
+      "explanation": "The sentence follows the SOV structure: '우리는' (we) is the subject, '주말에' (on the weekend) is a time expression, and '영화를 봅니다' (watch a movie) is the verb phrase."
+    },
+    {
+      "korean_sentence": "나는 저녁을 먹고 싶습니다.",
+      "english_sentence": "I want to eat dinner.",
+      "explanation": "This SOV structure sentence includes a verb phrase '먹고 싶습니다' (want to eat) after the object '저녁을' (dinner), with '나는' (I) as the subject."
+    },
+    {
+      "korean_sentence": "그들은 매일 학교에 갑니다.",
+      "english_sentence": "They go to school every day.",
+      "explanation": "'그들은' (they) is the subject, '매일' (every day) is a time expression, '학교에' (to school) is a location, and '갑니다' (go) is the verb."
+    },
+    {
+      "korean_sentence": "선생님은 학생들을 가르칩니다.",
+      "english_sentence": "The teacher teaches the students.",
+      "explanation": "'선생님은' (the teacher) is the subject, '학생들을' (the students) is the object, and '가르칩니다' (teaches) is the verb, following the SOV structure."
+    },
+    {
+      "korean_sentence": "우리는 서울에서 만났습니다.",
+      "english_sentence": "We met in Seoul.",
+      "explanation": "The sentence follows the SOV structure: '우리는' (we) is the subject, '서울에서' (in Seoul) is a location expression, and '만났습니다' (met) is the verb."
+    },
+    {
+      "korean_sentence": "나는 책을 읽고 있습니다.",
+      "english_sentence": "I am reading a book.",
+      "explanation": "'나는' (I) is the subject, '책을' (a book) is the object, and '읽고 있습니다' (am reading) is the verb phrase, following the SOV structure."
+    },
+    {
+      "korean_sentence": "그는 요리를 잘합니다.",
+      "english_sentence": "He cooks well.",
+      "explanation": "'그는' (he) is the subject, '요리를' (cooking) is the object, and '잘합니다' (cooks well) is the verb phrase, following the SOV structure."
+    },
+    {
+      "korean_sentence": "저는 친구와 함께 여행을 갑니다.",
+      "english_sentence": "I go on a trip with a friend.",
+      "explanation": "'저는' (I) is the subject, '친구와 함께' (with a friend) is a prepositional phrase, '여행을' (a trip) is the object, and '갑니다' (go) is the verb, following the SOV structure."
+    }
+  ]
+
 
       
       response_dict = json.loads(response)
@@ -187,9 +243,11 @@ if option == '한국어 익숙해지기':
         st.markdown(ex_explanation)
         
       with st.expander('입력하신 분야와 관련된 예문들을 확인해보세요!'):
-        for key, value in examples_dict.items():
+        for example in examples_dict['examples']:
           st.markdown(f"""
-                      {key} 문장에 대한 설명 : {value}
+                      Korean Sentence : {example['korean_sentence']} \n 
+                      English Sentence : {example['english_sentence']} \n 
+                      Explanation : {example['explanation']} \n 
                       """)
       
       with st.expander(f'{learnTopic} 관련 예시 더 많이 확인하기!'):

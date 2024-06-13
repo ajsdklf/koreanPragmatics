@@ -11,6 +11,9 @@ load_dotenv()
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY')
 
+
+#### PROMPTS
+
 CONSONANT_SCRIPT = """
   ---
 
@@ -357,6 +360,62 @@ sentence_structure_exmaples = [
 }
 ]
 
+pronunciation_examples = [
+{
+"korean_sentence": "저는 매일 아침 운동을 합니다.",
+"english_sentence": "I exercise every morning.",
+"explanation": "The word '운동' (exercise) is pronounced as [un-dong], similar to 'oon-dong' in English. Here, 'ㅇ' at the beginning is silent, and 'ㅜ' makes an 'oo' sound as in 'moon'. '동' sounds like 'dong' in 'gong'."
+},
+{
+"korean_sentence": "그는 한국어를 공부합니다.",
+"english_sentence": "He studies Korean.",
+"explanation": "In '한국어' (Korean), '한' is pronounced [han], similar to 'han' in 'hand'. '국' is pronounced [guk], similar to 'gook' in 'cook'. The '어' sounds like 'uh'."
+},
+{
+"korean_sentence": "우리는 서울에서 만났습니다.",
+"english_sentence": "We met in Seoul.",
+"explanation": "The word '서울' (Seoul) contains the diphthong 'ㅜ', pronounced as [seo-ul], which sounds like 'suh-ool'. Ensure smooth transition between the vowels 'ㅓ' and 'ㅜ', similar to saying 'so-ool'."
+},
+{
+"korean_sentence": "나는 저녁을 먹고 싶습니다.",
+"english_sentence": "I want to eat dinner.",
+"explanation": "When '저녁을' (dinner) and '먹고' (eat) are pronounced together, '저녁을' ends with 'ㄹ', which smoothly links to '먹고', resulting in [jeo-nyeok-eul-meok-go]. '저녁' sounds like 'jeo-nyuhk', similar to 'jaw-nyuk'. '먹고' sounds like 'muhk-go', similar to 'muck-go'."
+},
+{
+"korean_sentence": "그녀는 한국어를 잘합니다.",
+"english_sentence": "She speaks Korean well.",
+"explanation": "The intonation should rise slightly at the end of '잘합니다' (does well) to convey the affirmative statement. '잘합니다' is pronounced [jal-ham-ni-da], similar to 'jal-hahm-nee-da', where '잘' is like 'jal' in 'jolly'."
+},
+{
+"korean_sentence": "우리는 주말에 영화를 봅니다.",
+"english_sentence": "We watch a movie on the weekend.",
+"explanation": "In '영화를' (movie), the nasal consonant 'ㅇ' should be clearly pronounced. '영화' is pronounced [yeong-hwa], similar to 'yong-hwah'. The 'ㅇ' makes a nasal sound similar to 'ng' in 'song'."
+},
+{
+"korean_sentence": "나는 책을 읽고 있습니다.",
+"english_sentence": "I am reading a book.",
+"explanation": "In '책을' (book), the consonant 'ㄱ' is slightly tensed, pronounced as [chaek-eul], differentiating it from a softer sound. '책' sounds like 'chaek', similar to 'check', and '읽고' sounds like 'ilk-go', where '읽' is similar to 'illk'."
+},
+{
+"korean_sentence": "선생님은 학생들을 가르칩니다.",
+"english_sentence": "The teacher teaches the students.",
+"explanation": "In '학생들' (students), the 'ㄹ' in '들' is pronounced as a liquid 'r/l' sound, resulting in [hak-saeng-deul]. '학생' sounds like 'hak-saeng', similar to 'hack-sang', and '들' sounds like 'deul', similar to 'dull'."
+},
+{
+"korean_sentence": "그들은 매일 학교에 갑니다.",
+"english_sentence": "They go to school every day.",
+"explanation": "In '학교' (school), the vowel 'ㅗ' in '교' is reduced slightly in speech, resulting in [hak-gyo]. '학교' sounds like 'hak-gyo', similar to 'hack-gyo'."
+},
+{
+"korean_sentence": "저는 친구와 함께 여행을 갑니다.",
+"english_sentence": "I go on a trip with a friend.",
+"explanation": "In '친구와' (with a friend), the 'ㄴ' in '친' and 'ㄱ' in '구' are assimilated smoothly, resulting in [chin-gu-wa]. '친구' sounds like 'chin-gu', similar to 'chin-goo', and '함께' sounds like 'ham-kke', similar to 'hahm-keh'."
+}
+]
+
+
+#########################################################################
+
 client_o = OpenAI(api_key=OPENAI_API_KEY)
 client_a = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 
@@ -369,7 +428,7 @@ st.header(option)
 if option == '한글 익숙해지기':
   learnOption = st.selectbox(
     '어떤 공부를 하고 싶으세요?',
-    ['한국 알파벳 공부하기', '단어 형성 원리 공부하기', '자주 쓰이는 단어 공부하면서 한글 익숙해지기']
+    ['한국 알파벳 공부하기', '글자 형성 원리 공부하기', '자주 쓰이는 단어 공부하면서 한글 익숙해지기']
   )
   
   if learnOption == '한국 알파벳 공부하기': 
@@ -378,7 +437,7 @@ if option == '한글 익숙해지기':
     with st.expander('모음 체계 공부를 시작해보세요!'):
       st.markdown(VOWELS_SCRIPT)
   
-  if learnOption == '단어 형성 원리 공부하기':
+  if learnOption == '글자 형성 원리 공부하기':
     with st.expander('학습을 시작해보세요!'):
       st.markdown(LETTER_FORMATION_SCRIPT)
 
@@ -395,7 +454,7 @@ if option == '한국어 익숙해지기':
     
   learnTopic = st.selectbox(
     '어떤 요소를 학습하시고자 하나요?',
-    ['존댓말', '문장의 구성', '몰라요', '다른 요소들도 많겠죠', '그건 차차 생각해봅시다..']
+    ['존댓말', '문장의 구성', '발음']
   )
   circumstance = st.text_input('어떤 분야의 언어로 학습을 하고 싶으신가요?')
   sentence = st.chat_input('어떤 문장을 기반으로 공부하고 싶은지 입력해주세요.')
@@ -463,6 +522,16 @@ if option == '한국어 익숙해지기':
                         """)
         if learnTopic == '문장의 구성':
           for example in sentence_structure_exmaples:
+            st.markdown(f"""
+                      -----------------------------------------------
+                      Korean Sentence : {example['korean_sentence']} \n 
+                      English Sentence : {example['english_sentence']} \n 
+                      Explanation : {example['explanation']} \n 
+                      -----------------------------------------------
+                      """)
+        
+        if learnTopic == '발음':
+          for example in pronunciation_examples:
             st.markdown(f"""
                       -----------------------------------------------
                       Korean Sentence : {example['korean_sentence']} \n 

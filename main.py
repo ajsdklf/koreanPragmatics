@@ -26,8 +26,99 @@ if option == '한글 익숙해지기':
     ['한국 알파벳 공부하기', '단어 형성 원리 공부하기', '자주 쓰이는 단어 공부하면서 한글 익숙해지기']
   )
   
-  
-  
+  if learnOption == '한국 알파벳 공부하기':
+    st.markdown(
+      """
+      ---
+Welcome to understanding how Korean consonants and vowels combine to form words! This is a fundamental aspect of learning Korean, and we'll compare it to English to make it easier to grasp. We'll use names of famous K-pop idols to help illustrate these principles.
+
+### Basic Principle
+
+In Korean, each block (or character) represents a syllable. Each syllable is made up of at least one consonant and one vowel. These blocks are formed by combining consonants (자음) and vowels (모음) in specific ways.
+
+### Structure of Korean Syllables
+
+A typical Korean syllable block follows these patterns:
+
+1. **Consonant + Vowel (CV)**: The simplest form. 
+2. **Consonant + Vowel + Consonant (CVC)**: Adding a final consonant. 
+3. **Consonant + Vowel + Vowel (CVV)**: A more complex form with diphthongs.
+
+### Comparison with English
+
+In English, words are formed by placing letters linearly, like "cat" or "dog." In Korean, however, the letters are combined into blocks. Let's explore this with examples:
+
+### Example 1: Consonant + Vowel (CV)
+
+**Name: 수호 (Suho)** - EXO
+
+- **ㅅ (s) + ㅜ (u) = 수 (su)**: The consonant ㅅ and vowel ㅜ combine to form 수.
+- **ㅎ (h) + ㅗ (o) = 호 (ho)**: The consonant ㅎ and vowel ㅗ combine to form 호.
+
+Together, these syllables form the name **수호** (Suho).
+
+### Example 2: Consonant + Vowel + Consonant (CVC)
+
+**Name: 정국 (Jungkook)** - BTS
+
+1. **정 (Jeong)**
+   - **ㅈ (j) + ㅓ (eo) = 저 (jeo)**: The consonant ㅈ and vowel ㅓ combine to form 저.
+   - **ㅇ (ng)**: Adding the final consonant ㅇ creates 정.
+
+2. **국 (Guk)**
+   - **ㄱ (g) + ㅜ (u) = 구 (gu)**: The consonant ㄱ and vowel ㅜ combine to form 구.
+   - **ㄱ (k)**: Adding the final consonant ㄱ creates 국.
+
+Together, these syllables form the name **정국** (Jungkook).
+
+### Example 3: Consonant + Vowel + Vowel (CVV)
+
+**Name: 태연 (Taeyeon)** - Girls' Generation
+
+1. **태 (Tae)**
+   - **ㅌ (t) + ㅐ (ae) = 태 (tae)**: The consonant ㅌ and vowel ㅐ combine to form 태.
+
+2. **연 (Yeon)**
+   - **ㅇ (silent) + ㅕ (yeo) = 여 (yeo)**: The silent consonant ㅇ and vowel ㅕ combine to form 여.
+   - **ㄴ (n)**: Adding the final consonant ㄴ creates 연.
+
+Together, these syllables form the name **태연** (Taeyeon).
+
+### Example 4: More Complex Names
+
+**Name: 로제 (Rosé)** - BLACKPINK
+
+1. **로 (Ro)**
+   - **ㄹ (r/l) + ㅗ (o) = 로 (ro)**: The consonant ㄹ and vowel ㅗ combine to form 로.
+
+2. **제 (Je)**
+   - **ㅈ (j) + ㅔ (e) = 제 (je)**: The consonant ㅈ and vowel ㅔ combine to form 제.
+
+Together, these syllables form the name **로제** (Rosé).
+
+### Another Example
+
+**Name: 아이유 (IU)**
+
+1. **아 (A)**
+   - **ㅇ (silent) + ㅏ (a) = 아 (a)**: The silent consonant ㅇ and vowel ㅏ combine to form 아.
+
+2. **이 (I)**
+   - **ㅇ (silent) + ㅣ (i) = 이 (i)**: The silent consonant ㅇ and vowel ㅣ combine to form 이.
+
+3. **유 (Yu)**
+   - **ㅇ (silent) + ㅠ (yu) = 유 (yu)**: The silent consonant ㅇ and vowel ㅠ combine to form 유.
+
+Together, these syllables form the name **아이유** (IU).
+
+### Summary
+
+Korean words are formed by combining consonants and vowels into syllabic blocks. Each block represents a syllable, and syllables are combined to form words. This block system is unique to Korean and allows for a compact and organized way to write.
+
+By practicing how consonants and vowels come together to form these blocks, you'll get a better understanding of how to read and write Korean words. Keep practicing with different names and words, and soon you'll master the art of Korean syllabic blocks!
+---
+      """
+    )
 
 if option == '한국어 익숙해지기':
   with st.expander('서비스에 대한 설명을 확인하세요.'):

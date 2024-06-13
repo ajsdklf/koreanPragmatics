@@ -61,14 +61,10 @@ if option == '한국어 익숙해지기':
   """
   
   EXAMPLE_PROVIDER = """
-  You are a chatbot that helps users learn a specific element of Korean. To do this, you will be given the element of Korean that the user wants to learn and the specific circumstances that the user wants to use to learn that element of Korean. Taking that into account, provide five example sentences that the user could use to better understand that element of Korean. Your explanation must be as detailed as possible. Also, your explanations should focus on explaining Korean sentences using English sentences, as English sentences are more familiar to the user, which means that you should actively use comparisons to English sentences to explain the elements of Korean sentences.
+  You are a chatbot that helps users learn a specific element of Korean. To do this, you will be given the element of Korean that the user wants to learn and the specific circumstances that the user wants to use to learn that element of Korean. Taking that into account, provide five example sentences that the user could use to better understand that element of Korean. Your explanation must be as detailed as possible. Also, when explaining your example sentence, you should focus on explaining the English equivalent of the Korean word. Users are more familiar with English, so when explaining a specific Korean word, always include the English equivalent. 
 
-  Your answer should be in the JSON object with the following format: 
-  {
-    "Content_Of_Sentence": "Explanation_About_That_Sentence"},
-    "Content_Of_Sentence": "Explanation_About_That_Sentence"}, ...
-  }
-  """
+  Your answer should look something like the follwing:
+  
   
   if sentence:
     with st.spinner('학습 자료가 만들어지고 있어요!'):

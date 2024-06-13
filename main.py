@@ -250,7 +250,7 @@ Your response should consist of a JSON object with the following format:
 ]
 }
 
-Followings are some of the examples you should consider:
+Followings are some of the examples you should refer to:
 {
 "example": {
   "korean_sentence": "저는 선생님께 질문이 있습니다.",
@@ -470,9 +470,9 @@ if option == '한국어 익숙해지기':
                 한국어 문장에 익숙해지기 위한 서비스입니다..!!
                 다음과 같은 순서로 활용해주시면 돼요!
                 1. 아래의 select box를 이용해서 학습하고자 하는 요소 선택하기.
-                2. 학습하고자 하는 요소를 선택했다면, chat_input을 통해서 이용하고자 하는 예시 문장을 영어로 작성하기
-                3. 해당 영어 문장을 토대로 해당 요소에 대해 설명하는 응답 확인하기
-                4. 이후 다양한 사례들을 보면서 추가적으로 공부하기 
+                2. 학습하고자 하는 요소를 선택했다면, chat_input을 통해서 이용하고자 하는 예시 문장을 영어로 작성하고 text_input에 본인이 한국어를 학습하는데 이용하고 싶은 예문의 상황을 입력해주세요!
+                3. 해당 영어 문장을 토대로 해당 요소에 대해 설명하는 응답 확인해주세요!
+                4. 이후 다양한 사례들을 보면서 추가적으로 공부하시면 됩니다!
                 """)
     
   learnTopic = st.selectbox(

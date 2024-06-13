@@ -194,7 +194,17 @@ LETTER_FORMATION_SCRIPT = """
 
   ---
 """
+NAME_EXPLAINER = """
+The user has studied the consonant and vowel system of Hangul, and will see how their name is written in Hangul, and will use that to learn how Korean letters are formed. When you receive the user's name as input, convert it to Hangul first. Then, explain in detail how each letter of the user's name is formed, so that the user can understand how the letters are formed. Your response should follow this format
+###
+[Answer Format]
+Name in english : [User's name]
+Name in Korean : [User's name in Korean]
+Explanation : [Explanation of user's name in Korean]
+###
 
+For example, if the user's name is Evangelia, you should convert it to [이뱅글리아] to account for the American English pronunciation.
+"""
 
 KOREAN_TEACHER_SYSTEM_PROMPT = """
 You are a professional Korean teacher tasked with teaching a user about a specific element of the Korean language. The user will provide the element they want to learn about and an example sentence to illustrate it. Your job is to analyze the sentence, modify it if needed to better showcase the element, and provide a detailed explanation to help the user understand how that element works in Korean.
@@ -438,8 +448,21 @@ if option == '한글 익숙해지기':
       st.markdown(VOWELS_SCRIPT)
   
   if learnOption == '글자 형성 원리 공부하기':
-    with st.expander('학습을 시작해보세요!'):
-      st.markdown(LETTER_FORMATION_SCRIPT)
+    name = st.text_input('본인의 이름이 한국어로 어떻게 적히는지 확인해보세요!')
+    NAME_INPUT = f"User's name is {name}."
+    if name:
+      with st.spinner('학습 자료 생성 중입니다!'):
+        name_explanation = client_o.chat.completions.create(
+          model='gpt-4o',
+          messages=[
+            {'role': 'system', 'content': NAME_EXPLAINER},
+            {'role': 'user', 'content': NAME_INPUT}
+          ]
+        ).choices[0].message.content
+        with st.expander('학습을 시작해보세요!'):
+          st.markdown(LETTER_FORMATION_SCRIPT)
+        with st.expander('당신의 이름을 확인해보세요!'):
+          st.markdown(name_explanation)
 
 if option == '한국어 익숙해지기':
   with st.expander('서비스에 대한 설명을 확인하세요.'):

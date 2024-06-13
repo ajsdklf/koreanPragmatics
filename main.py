@@ -479,7 +479,7 @@ if option == '한국어 익숙해지기':
     '어떤 요소를 학습하시고자 하나요?',
     ['존댓말', '문장의 구성', '발음']
   )
-  circumstance = st.text_input('어떤 분야의 언어로 학습을 하고 싶으신가요?')
+  circumstance = st.text_input('어떤 상황을 기반으로 학습을 하고 싶으신가요? ex. Making an order in restaurant. Talking to bias in fan-meeting etc.')
   sentence = st.chat_input('어떤 문장을 기반으로 공부하고 싶은지 입력해주세요.')
   
   if sentence:

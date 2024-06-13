@@ -20,6 +20,15 @@ option = st.sidebar.selectbox(
 )
 st.header(option)
 
+if option == '한글 익숙해지기':
+  learnOption = st.selectbox(
+    '어떤 공부를 하고 싶으세요?',
+    ['한국 알파벳 공부하기', '단어 형성 원리 공부하기', '자주 쓰이는 단어 공부하면서 한글 익숙해지기']
+  )
+  
+  
+  
+
 if option == '한국어 익숙해지기':
   with st.expander('서비스에 대한 설명을 확인하세요.'):
     st.markdown("""

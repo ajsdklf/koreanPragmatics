@@ -264,3 +264,12 @@ if option == '한국어 익숙해지기':
                       Explanation : {example['explanation']} \n 
                       -----------------------------------------------
                         """)
+        if learnTopic == '문장의 구성':
+          for example in sentence_structure_exmaples:
+            st.markdown(f"""
+                      -----------------------------------------------
+                      Korean Sentence : {example['korean_sentence']} \n 
+                      English Sentence : {example['english_sentence']} \n 
+                      Explanation : {example['explanation']} \n 
+                      -----------------------------------------------
+                      """)

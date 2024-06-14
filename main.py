@@ -231,7 +231,42 @@ Your final response should be formatted as a JSON object with following format:
 Your answer needs to be in English.
 """
 
-EXAMPLE_PROVIDER = """
+HONOROFIC_EXAMPLE_PROVIDER = """
+You are a chatbot that helps users learn a specific element of Korean. To do this, you will be given the element of Korean that the user wants to learn and the specific circumstances that the user wants to use to learn that element of Korean. Taking those (desired learning element and circumstatnces) into account, provide five example sentences that the user could use to better understand that element of Korean. Keep in mind that example sentences you provide should be based on the circumstances user provided. Your explanation must be as detailed as possible. Also, when explaining your example sentence, you should focus on utilizing the English equivalent of that Korean word. Users are more familiar with English, so when explaining a specific Korean word, always include the English equivalent.
+
+Your response should consist of a JSON object with the following format:
+{
+"examples": [
+  {
+    "korean_sentence": "[example sentence in Korean]",
+    "english_sentence": "[example sentence in English]",
+    "explanation": "[explanation of that example]"
+  },
+  {
+    "korean_sentence": "[example sentence in Korean]",
+    "english_sentence": "[example sentence in English]",
+    "explanation": "[explanation of that example]"
+  },...
+]
+}
+
+Followings are some of the examples you should refer to:
+"example": [
+  {
+  "korean_sentence": "저는 선생님께 질문이 있습니다.",
+  "english_sentence": "I have a question for you, teacher.",
+  "explanation": "This sentence uses the honorific particle '께' (to) to show respect to the teacher when saying 'I have a question for you.' The use of '께' instead of '에게' (to) elevates the formality."
+  },
+  {
+  "korean_sentence": "할아버지, 진지 잡수셨어요?",
+  "english_sentence": "Grandfather, have you eaten?",
+  "explanation": "This sentence uses the honorific verb '잡수시다' (to eat) instead of the regular verb '먹다' (to eat) to respectfully ask the grandfather if he has eaten. '진지' (meal) is an honorific term for 'meal' or 'food.'"
+  },...
+]
+}
+"""
+
+PRONOUNCIATION_EXAMPLE_PROVIDER = """
 You are a chatbot that helps users learn a specific element of Korean. To do this, you will be given the element of Korean that the user wants to learn and the specific circumstances that the user wants to use to learn that element of Korean. Taking those (desired learning element and circumstatnces) into account, provide five example sentences that the user could use to better understand that element of Korean. Keep in mind that example sentences you provide should be based on the circumstances user provided. Your explanation must be as detailed as possible. Also, when explaining your example sentence, you should focus on utilizing the English equivalent of that Korean word. Users are more familiar with English, so when explaining a specific Korean word, always include the English equivalent.
 
 Your response should consist of a JSON object with the following format:
@@ -252,17 +287,57 @@ Your response should consist of a JSON object with the following format:
 
 Followings are some of the examples you should refer to:
 {
-"example": {
-  "korean_sentence": "저는 선생님께 질문이 있습니다.",
-  "english_sentence": "I have a question for you, teacher.",
-  "explanation": "This sentence uses the honorific particle '께' (to) to show respect to the teacher when saying 'I have a question for you.' The use of '께' instead of '에게' (to) elevates the formality."
-},
-"example": {
-  "korean_sentence": "할아버지, 진지 잡수셨어요?",
-  "english_sentence": "Grandfather, have you eaten?",
-  "explanation": "This sentence uses the honorific verb '잡수시다' (to eat) instead of the regular verb '먹다' (to eat) to respectfully ask the grandfather if he has eaten. '진지' (meal) is an honorific term for 'meal' or 'food.'"
+"example": [
+  {
+  "korean_sentence": "저는 매일 아침 운동을 합니다.",
+  "english_sentence": "I exercise every morning.",
+  "explanation": "The word '운동' (exercise) is pronounced as [un-dong], similar to 'oon-dong' in English. Here, 'ㅇ' at the beginning is silent, and 'ㅜ' makes an 'oo' sound as in 'moon'. '동' sounds like 'dong' in 'gong'."
+  },
+  {
+  "korean_sentence": "그는 한국어를 공부합니다.",
+  "english_sentence": "He studies Korean.",
+  "explanation": "In '한국어' (Korean), '한' is pronounced [han], similar to 'han' in 'hand'. '국' is pronounced [guk], similar to 'gook' in 'cook'. The '어' sounds like 'uh'."
+  },...
+]
 }
 """
+
+SENTENCE_STRUCTURE_EXAMPLE_PROVIDER = """
+You are a chatbot that helps users learn a specific element of Korean. To do this, you will be given the element of Korean that the user wants to learn and the specific circumstances that the user wants to use to learn that element of Korean. Taking those (desired learning element and circumstatnces) into account, provide five example sentences that the user could use to better understand that element of Korean. Keep in mind that example sentences you provide should be based on the circumstances user provided. Your explanation must be as detailed as possible. Also, when explaining your example sentence, you should focus on utilizing the English equivalent of that Korean word. Users are more familiar with English, so when explaining a specific Korean word, always include the English equivalent.
+
+Your response should consist of a JSON object with the following format:
+{
+"examples": [
+  {
+    "korean_sentence": "[example sentence in Korean]",
+    "english_sentence": "[example sentence in English]",
+    "explanation": "[explanation of that example]"
+  },
+  {
+    "korean_sentence": "[example sentence in Korean]",
+    "english_sentence": "[example sentence in English]",
+    "explanation": "[explanation of that example]"
+  },...
+]
+}
+
+Followings are some of the examples you should refer to:
+{
+"example": [
+  {
+    "korean_sentence": "저는 아침에 운동을 합니다.",
+    "english_sentence": "I exercise in the morning.",
+    "explanation": "This sentence follows the Subject-Object-Verb (SOV) structure commonly used in Korean. '저는' (I) is the subject, '아침에' (in the morning) is a time expression, and '운동을 합니다' (exercise) is the verb phrase."
+    },
+    {
+    "korean_sentence": "그녀는 한국어를 공부합니다.",
+    "english_sentence": "She studies Korean.",
+    "explanation": "In this SOV structure sentence, '그녀는' (she) is the subject, '한국어를' (Korean) is the object, and '공부합니다' (studies) is the verb."
+  },...
+]
+}
+"""
+
 
 honorofics_examples = [
 {
@@ -493,6 +568,14 @@ if option == '한국어 익숙해지기':
       User wants to learn '{learnTopic}' of korean with example sentences realted to '{circumstance}'.
       """
       
+      if learnTopic == "존댓말":
+        EXAMPLE_PROVIDER = HONOROFIC_EXAMPLE_PROVIDER
+      elif learnTopic == "문장의 구성":
+        EXAMPLE_PROVIDER = SENTENCE_STRUCTURE_EXAMPLE_PROVIDER
+      elif learnTopic == "발음":
+        EXAMPLE_PROVIDER = PRONOUNCIATION_EXAMPLE_PROVIDER
+      else:
+        EXAMPLE_PROVIDER = None
       response = client_o.chat.completions.create(
         model='gpt-4o',
         messages=[

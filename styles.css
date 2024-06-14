@@ -1,0 +1,62 @@
+
+body {
+  background-color: #0b1a2a;
+  color: #e0e0e0;
+  font-family: 'Arial', sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+.sidebar .sidebar-content {
+  background-color: #0d213a;
+  padding: 20px;
+}
+.sidebar .sidebar-content input,
+.sidebar .sidebar-content select,
+.sidebar .sidebar-content textarea {
+  background-color: #1e2f47;
+  color: #ffffff;
+  border: 1px solid #233348;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.sidebar .sidebar-content .stButton>button {
+  background-color: #2a3b55;
+  color: #ffffff;
+  border: 1px solid #3b4f6b;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.stButton>button {
+  background-color: #2a3b55;
+  color: #ffffff;
+  border: 1px solid #3b4f6b;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.stMarkdown,
+.stTextArea,
+.stTextInput,
+.stSelectbox,
+.stCheckbox,
+.stRadio,
+.stDateInput,
+.stNumberInput,
+.stTimeInput,
+.stSlider,
+.stSelectSlider {
+  background-color: #142d4c;
+  color: #e0e0e0;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+.stMarkdown a {
+  color: #1e90ff;
+}
+.stMarkdown a:hover {
+  color: #87cefa;
+}
+

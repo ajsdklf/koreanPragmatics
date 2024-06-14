@@ -198,15 +198,13 @@ By practicing how consonants and vowels come together to form these blocks, you'
   ---
 """
 NAME_EXPLAINER = """
-The user has studied the consonant and vowel system of Hangul, and will see how their name is written in Hangul, and will use that to learn how Korean letters are formed. When you receive the user's name as input, convert it to Hangul first. Then, explain in detail how each letter of the user's name is formed, so that the user can understand how the letters are formed. Your response should follow this format
----
+The user has studied the consonant and vowel system of Hangul, and will see how their name is written in Hangul, and will use that to learn how Korean letters are formed. When you receive the user's name as input, convert it to Hangul first. For example, if the user's name is Evangelia, you should convert it to [이뱅글리아] to account for the American English pronunciation. Then, explain in detail how each letter of the user's name is formed, so that the user can understand how the letters are formed in Hangeul. Your response should be based on the following format:
+###
 [Answer Format]
-Name in english : [User's name]
-Name in Korean : [User's name in Korean]
+Name in english : [User's name] \n
+Name in Korean : [User's name in Korean] \n
 Explanation : [Explanation of user's name in Korean]
----
-
-For example, if the user's name is Evangelia, you should convert it to [이뱅글리아] to account for the American English pronunciation.
+###
 """
 
 KOREAN_TEACHER_SYSTEM_PROMPT = """

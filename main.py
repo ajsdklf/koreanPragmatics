@@ -513,7 +513,7 @@ st.header(option)
 if option == '한글 익숙해지기':
   learnOption = st.selectbox(
     '어떤 공부를 하고 싶으세요?',
-    ['한국 알파벳 공부하기', '글자 형성 원리 공부하기', '자주 쓰이는 단어 공부하면서 한글 익숙해지기']
+    ['한국 알파벳 공부하기', '글자 형성 원리 공부하기_이론', '글자 형성 원리_원하는 이름 활용']
   )
   
   if learnOption == '한국 알파벳 공부하기': 
@@ -522,8 +522,12 @@ if option == '한글 익숙해지기':
     with st.expander('모음 체계 공부를 시작해보세요!'):
       st.markdown(VOWELS_SCRIPT)
   
-  if learnOption == '글자 형성 원리 공부하기':
-    name = st.text_input('본인의 이름이 한국어로 어떻게 적히는지 확인해보세요!')
+  if learnOption == '글자 형성 원리 공부하기_이론':
+    with st.expander('학습을 시작해보세요!'):
+      st.markdown(LETTER_FORMATION_SCRIPT)
+  
+  if learnOption == '글자 형성 원리 공부하기_원하는 이름 활용':
+    name = st.text_input('학습하는데 이용하고 싶은 이름을 영어로 입력해주세요!')
     NAME_INPUT = f"User's name is {name}."
     if name:
       with st.spinner('학습 자료 생성 중입니다!'):
@@ -534,9 +538,7 @@ if option == '한글 익숙해지기':
             {'role': 'user', 'content': NAME_INPUT}
           ]
         ).choices[0].message.content
-        with st.expander('학습을 시작해보세요!'):
-          st.markdown(LETTER_FORMATION_SCRIPT)
-        with st.expander('당신의 이름을 확인해보세요!'):
+        with st.expander('그 이름이 한글로 어떻게 되는지 확인해보세요!'):
           st.markdown(name_explanation)
 
 if option == '한국어 익숙해지기':

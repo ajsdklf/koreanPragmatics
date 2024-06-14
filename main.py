@@ -536,8 +536,8 @@ You are an assistant who helps native English speakers learn Korean words. As in
 Another important rule is that you should never use markdown techniques. Only markdowns that allowed are bold, list, bullet-points. Never use headers, code and other markdown techniques.
 
 Your answer should look something like the following example:
+===
 Words used in the example sentence : 
----
 Word1
 날씨 (nal-ssi)
 
@@ -562,7 +562,7 @@ Word3
 Meaning: To spend time, to live
 Pronunciation: [ji-nae-da]
 Explanation: "지내다" is a verb that means to spend time or to live in a certain way. In the context of the question "어떻게 지내셨어요?", it is asking how someone has been doing or how they have spent their time recently.
----
+===
 """
 
 
@@ -573,7 +573,7 @@ client_a = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 
 option = st.sidebar.selectbox(
   '학습 선택하기',
-  ['한글 익숙해지기', '한국어 익숙해지기', '화용론 학습하기']
+  ['한글 익숙해지기', '한국어 익숙해지기']
 )
 st.header(option)
 
@@ -639,7 +639,7 @@ if option == '한국어 익숙해지기':
       ['자음과 모음의 발음', '억양과 강세', '받침 발음', '음운의 변동']
     )
   circumstance = st.text_input('어떤 상황을 기반으로 학습을 하고 싶으신가요? ex. Making an order in restaurant. Talking to bias in fan-meeting etc.')
-  sentence = st.chat_input('어떤 문장을 기반으로 공부하고 싶은지 입력해주세요.')
+  sentence = st.chat_input('어떤 문장을 기반으로 공부하고 싶은지 입력해주세요. 최대한 구체적으로 적어주세요!')
   
   if sentence:
     with st.spinner('학습 자료가 만들어지고 있어요!'):
@@ -704,7 +704,7 @@ if option == '한국어 익숙해지기':
 Korean Sentence : {example['korean_sentence']} \n
 English Sentence : {example['english_sentence']} \n
 Explanation : {example['explanation']} \n
-Words used in the example sentence : {words} \n
+{words} \n
 """)
       
       with st.expander(f'{learnTopic} 관련 예시 더 많이 확인하기!'):
@@ -737,7 +737,3 @@ Words used in the example sentence : {words} \n
                       -----------------------------------------------
                       """)
             
-if option == '화용론 학습하기':
-  st.selectbox(
-    
-  )

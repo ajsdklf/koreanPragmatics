@@ -199,12 +199,12 @@ By practicing how consonants and vowels come together to form these blocks, you'
 """
 NAME_EXPLAINER = """
 The user has studied the consonant and vowel system of Hangul, and will see how their name is written in Hangul, and will use that to learn how Korean letters are formed. When you receive the user's name as input, convert it to Hangul first. Then, explain in detail how each letter of the user's name is formed, so that the user can understand how the letters are formed. Your response should follow this format
-###
+---
 [Answer Format]
 Name in english : [User's name]
 Name in Korean : [User's name in Korean]
 Explanation : [Explanation of user's name in Korean]
-###
+---
 
 For example, if the user's name is Evangelia, you should convert it to [이뱅글리아] to account for the American English pronunciation.
 """
@@ -235,7 +235,14 @@ Your answer needs to be in English.
 """
 
 HONOROFIC_EXAMPLE_PROVIDER = """
-You are a chatbot that helps users learn a specific element of Korean. To do this, you will be given the element of Korean that the user wants to learn and the specific circumstances that the user wants to use to learn that element of Korean. Taking those (desired learning element and circumstatnces) into account, provide five example sentences that the user could use to better understand that element of Korean. Keep in mind that example sentences you provide should be based on the circumstances user provided. Your explanation must be as detailed as possible. Also, when explaining your example sentence, you should focus on utilizing the English equivalent of that Korean word. Users are more familiar with English, so when explaining a specific Korean word, always include the English equivalent.
+You are a chatbot that helps users learn a honorofics of Korean. Your task is to provide good example sentences and great explanation that user could use to study Korean Honorofics. When providing examples and explanation, you should follow the given rules.
+---
+[Rules]
+1. You will be given the specific circumstances that user wants to use to learn honorofics of Korean. For example, user might want to learn honorofics used in the circumstance of making an order in cafeteria. Your examples should be generated based on the circumstances given by user. 
+2. You will also be given specified element of honorifcs user wants to focus on. When generating explanation, element that user wants to foucs on must be taken into account. 
+3. Your explanation should be focused on utilizing English equivalent of Korean. User's are native English speaker and much more familiar with English than Korean. Therefore, when explaining a specific Korean word, always include the English equivalent.
+4. Your explanation must be as detailed and kind. It should be written so kindly that even middle school student could read your explanation and understand things you are explaining.
+---
 
 Your response should consist of a JSON object with the following format:
 {
@@ -270,7 +277,15 @@ Followings are some of the examples you should refer to:
 """
 
 PRONOUNCIATION_EXAMPLE_PROVIDER = """
-You are a chatbot that helps users learn a specific element of Korean. To do this, you will be given the element of Korean that the user wants to learn and the specific circumstances that the user wants to use to learn that element of Korean. Taking those (desired learning element and circumstatnces) into account, provide five example sentences that the user could use to better understand that element of Korean. Keep in mind that example sentences you provide should be based on the circumstances user provided. Your explanation must be as detailed as possible. Also, when explaining your example sentence, you should focus on utilizing the English equivalent of that Korean word. Users are more familiar with English, so when explaining a specific Korean word, always include the English equivalent.
+You are a chatbot that helps users learn a pronounciations of Korean. Your task is to provide good example sentences and great explanation that user could use to study Korean pronounciations of Korean. When providing examples and explanation, you should follow the given rules.
+---
+[Rules]
+1. You will be given the specific circumstances that user wants to use to learn pronounciations of Korean. Your examples should be generated based on the circumstances given by user. 
+2. You will also be given specified element of pronounciations user wants to focus on. When generating explanation, element that user wants to foucs on must be taken into account. 
+3. Your explanation should be focused on utilizing English equivalent of Korean. User's are native English speaker and much more familiar with English than Korean. Therefore, when explaining a specific Korean word, always include the English equivalent.
+4. Your explanation must be as detailed and kind. It should be written so kindly that even middle school student could read your explanation and understand things you are explaining.
+5. Your explanation should always include the pronunciation of the Korean sentence. For example, an explanation of the sentence “나 오늘 너무 행복해" should include the pronunciation: "na oenul neomoo haengbokhae".
+---
 
 Your response should consist of a JSON object with the following format:
 {
@@ -306,7 +321,14 @@ Followings are some of the examples you should refer to:
 """
 
 SENTENCE_STRUCTURE_EXAMPLE_PROVIDER = """
-You are a chatbot that helps users learn a specific element of Korean. To do this, you will be given the element of Korean that the user wants to learn and the specific circumstances that the user wants to use to learn that element of Korean. Taking those (desired learning element and circumstatnces) into account, provide five example sentences that the user could use to better understand that element of Korean. Keep in mind that example sentences you provide should be based on the circumstances user provided. Your explanation must be as detailed as possible. Also, when explaining your example sentence, you should focus on utilizing the English equivalent of that Korean word. Users are more familiar with English, so when explaining a specific Korean word, always include the English equivalent.
+You are a chatbot that helps users learn sentence structure of Korean. Your task is to provide good example sentences and great explanation that user could use to study Korean sentence structure. When providing examples and explanation, you should follow the given rules.
+---
+[Rules]
+1. You will be given the specific circumstances that user wants to use to learn sentence structure of Korean. For example, user might want to learn sentence structure with sentences used in the circumstance of making an order in cafeteria. Your examples should be generated based on the circumstances given by user. 
+2. You will also be given specified element of sentence structure user wants to focus on. When generating explanation, element that user wants to foucs on must be taken into account. 
+3. Your explanation should be focused on utilizing English equivalent of Korean. User's are native English speaker and much more familiar with English than Korean. Therefore, when explaining a specific Korean word, always include the English equivalent.
+4. Your explanation must be as detailed and kind. It should be written so kindly that even middle school student could read your explanation and understand things you are explaining.
+---
 
 Your response should consist of a JSON object with the following format:
 {
@@ -501,6 +523,48 @@ pronunciation_examples = [
 }
 ]
 
+WORD_EXTRACTOR = """
+You are an assistant who helps native English speakers learn Korean words. As input, you will be given a Korean sentence. From the sentence, you will extract Korean words and provide a detailed description of each word. When extracting words and providing explanation you should keep in mind the following rules:
+---
+[Rules]
+1. Do not extract every word. You should extract three words per sentence and criteria for selecting words should be how important each word is when learning Korean.
+2. the meaning of the word
+3. the pronunciation of the word
+4. explanation of the word: The explanation of the word should be presented in English, considering that the user is an English-speaking foreigner. For example, when explaining the word "쓰다", you should provide a detailed explanation using the English word "write", which has the same meaning.
+---
+
+Another important rule is that you should never use markdown techniques. Only markdowns that allowed are bold, list, bullet-points. Never use headers, code and other markdown techniques.
+
+Your answer should look something like the following example:
+Words used in the example sentence : 
+---
+Word1
+날씨 (nal-ssi)
+
+Meaning: Weather
+
+Pronunciation: [nal-ssi]
+
+Explanation: The word "날씨" refers to the state of the atmosphere at a particular place and time, including factors like temperature, humidity, wind, and precipitation. In this sentence, "날씨" is used to comment on the weather being nice.
+
+Word2
+정말 (jeong-mal)
+
+Meaning: Really, truly
+
+Pronunciation: [jeong-mal]
+
+Explanation: "정말" is used to emphasize the truth or intensity of something. In the sentence, it emphasizes just how good the weather is, equivalent to saying "really" in English.
+
+Word3
+지내다 (ji-nae-da)
+
+Meaning: To spend time, to live
+Pronunciation: [ji-nae-da]
+Explanation: "지내다" is a verb that means to spend time or to live in a certain way. In the context of the question "어떻게 지내셨어요?", it is asking how someone has been doing or how they have spent their time recently.
+---
+"""
+
 
 #########################################################################
 
@@ -509,7 +573,7 @@ client_a = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 
 option = st.sidebar.selectbox(
   '학습 선택하기',
-  ['한글 익숙해지기', '한국어 익숙해지기']
+  ['한글 익숙해지기', '한국어 익숙해지기', '화용론 학습하기']
 )
 st.header(option)
 
@@ -559,6 +623,21 @@ if option == '한국어 익숙해지기':
     '어떤 요소를 학습하시고자 하나요?',
     ['존댓말', '문장의 구성', '발음']
   )
+  if learnTopic == '존댓말':
+    learningElement = st.selectbox(
+      '존댓말의 어떤 부분을 집중적으로 학습하고 싶으신가요?',
+      ['존댓말의 개념적 요소', '상황에 따라 달라지는 다양한 존댓말', '존댓말 관련 문화적 맥락']
+    )
+  if learnTopic == '문장의 구성':
+    learningElement = st.selectbox(
+      '문장 구성의 어떤 부분을 집중적으로 학습하고 싶으신가요?',
+      ['문장 구조', '조사', '동사 및 형용사의 활용', '부사 및 어휘']
+    )
+  if learnTopic == '발음':
+    learningElement = st.selectbox(
+      '발음의 어떤 부분을 집중적으로 학습하고 싶으신가요?',
+      ['자음과 모음의 발음', '억양과 강세', '받침 발음', '음운의 변동']
+    )
   circumstance = st.text_input('어떤 상황을 기반으로 학습을 하고 싶으신가요? ex. Making an order in restaurant. Talking to bias in fan-meeting etc.')
   sentence = st.chat_input('어떤 문장을 기반으로 공부하고 싶은지 입력해주세요.')
   
@@ -570,7 +649,7 @@ if option == '한국어 익숙해지기':
       """.strip()
       
       EXAMPLE_USER_PROMPT = f"""
-      User wants to learn '{learnTopic}' of korean with example sentences realted to '{circumstance}'.
+      User wants to learn '{learnTopic}' of korean with example sentences realted to '{circumstance}'. User especailly want to foucs on {learningElement} of {learnTopic} from the examples you provide.
       """
       
       if learnTopic == "존댓말":
@@ -589,6 +668,7 @@ if option == '한국어 익숙해지기':
         ],
         response_format={'type': 'json_object'}
       ).choices[0].message.content 
+      
       
       examplesRelatedToField = client_o.chat.completions.create(
         model='gpt-4o',
@@ -613,13 +693,19 @@ if option == '한국어 익숙해지기':
         
       with st.expander('입력하신 분야와 관련된 예문들을 확인해보세요!'):
         for example in examples_dict['examples']:
+          words = client_o.chat.completions.create(
+            model='gpt-4o',
+            messages=[
+              {'role': 'system', 'content': WORD_EXTRACTOR},
+              {'role': 'user', 'content': example['korean_sentence']}
+            ]
+          ).choices[0].message.content
           st.markdown(f"""
-                      -----------------------------------------------
-                      Korean Sentence : {example['korean_sentence']} \n 
-                      English Sentence : {example['english_sentence']} \n 
-                      Explanation : {example['explanation']} \n 
-                      -----------------------------------------------
-                      """)
+Korean Sentence : {example['korean_sentence']} \n
+English Sentence : {example['english_sentence']} \n
+Explanation : {example['explanation']} \n
+Words used in the example sentence : {words} \n
+""")
       
       with st.expander(f'{learnTopic} 관련 예시 더 많이 확인하기!'):
         if learnTopic == '존댓말':
@@ -650,3 +736,8 @@ if option == '한국어 익숙해지기':
                       Explanation : {example['explanation']} \n 
                       -----------------------------------------------
                       """)
+            
+if option == '화용론 학습하기':
+  st.selectbox(
+    
+  )

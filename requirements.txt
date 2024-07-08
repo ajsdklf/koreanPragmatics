@@ -4,3 +4,5 @@ streamlit
 openai
 anthropic
 python-dotenv
+llama-index
+llama-index-vector-stores-chroma

@@ -193,4 +193,3 @@ if st.session_state.initialize:
                 with st.chat_message('assistant'):
                     st.markdown('If you want more extra explanations, feel free to ask whatever. I am here to help you!') 
                 st.session_state.messages.append({'role': 'assistant', 'content': explanation})
-

@@ -98,6 +98,8 @@ if "chat_started" not in st.session_state:
     st.session_state.chat_started = False
 if "feedbacks" not in st.session_state:
     st.session_state.feedbacks = []
+if "simulation_ended" not in st.session_state:
+    st.session_state.simulation_ended = False
 
 # Custom CSS for better styling
 st.markdown("""
@@ -129,6 +131,14 @@ st.markdown("""
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .simulation-end {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        text-align: center;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -211,7 +221,7 @@ elif page == "시뮬레이션 시작":
             st.session_state.chat_started = True
     
     # Chat interface
-    if st.session_state.chat_started:
+    if st.session_state.chat_started and not st.session_state.simulation_ended:
         st.markdown('<div class="chat-container">', unsafe_allow_html=True)
         st.markdown("#### 💬 대화 시뮬레이션")
         
@@ -277,7 +287,29 @@ elif page == "시뮬레이션 시작":
                         st.markdown("**개선 제안:**")
                         for suggestion in latest_feedback.improvement_suggestions:
                             st.markdown(f"- {suggestion}")
+            
+            # Check if simulation is done
+            if ai_response.is_done:
+                st.session_state.simulation_ended = True
+                st.rerun()
+
         st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Show simulation end UI
+    if st.session_state.simulation_ended:
+        st.markdown("""
+            <div class="simulation-end">
+                <h2>🔚 시뮬레이션이 종료되었습니다</h2>
+                <p>최종 피드백을 확인하고 대응 방법을 개선해보세요.</p>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        if st.button("새로운 시뮬레이션 시작"):
+            st.session_state.chat_started = False
+            st.session_state.simulation_ended = False
+            st.session_state.messages = []
+            st.session_state.feedbacks = []
+            st.rerun()
 
 elif page == "통계 및 분석":
     st.markdown('<h2 class="sub-header">통계 및 분석</h2>', unsafe_allow_html=True)

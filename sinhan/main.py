@@ -1,6 +1,10 @@
 import streamlit as st
 from openai import OpenAI
 from pydantic import BaseModel, Field
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 class PhishingConversation(BaseModel):
     victim_name: str
@@ -49,7 +53,7 @@ You are acting as a phone scammer (보이스피싱 가해자), pretending to be 
 Follow the above instructions strictly to ensure the authenticity of the scenario and give user's a meaningful experience. Your response has to be in Korean and has to be in JSON format with the following fields: victim_name, scammer_name, relationship, continued_conversation, is_done.
 """
 
-client = OpenAI()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Set page config
 st.set_page_config(
@@ -139,9 +143,7 @@ if page == "서비스 소개":
         - 개인별 맞춤 피드백
         - 대응 능력 분석 리포트
         """)
-    
-    st.markdown("#### 🔍 시스템 설계")
-    st.image("https://via.placeholder.com/800x400", caption="시스템 아키텍처", use_column_width=True)
+
     
 elif page == "시뮬레이션 시작":
     st.markdown('<h2 class="sub-header">시뮬레이션</h2>', unsafe_allow_html=True)

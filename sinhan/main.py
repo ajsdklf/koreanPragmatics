@@ -3,6 +3,7 @@ from openai import OpenAI
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 import os
+import asyncio
 
 load_dotenv()
 
@@ -12,6 +13,12 @@ class PhishingConversation(BaseModel):
     relationship: str
     continued_conversation: str = Field(description="The agents response to the user's response.")
     is_done: bool = Field(description="Whether the conversation is done or not. It is done either when user transfers money or when user decides to hang up.")
+
+class Feedback(BaseModel):
+    risk_level: str = Field(description="Risk level of the conversation: 'high', 'medium', or 'low'")
+    response_evaluation: str = Field(description="Overall evaluation of victim's response")
+    warning_signs: list[str] = Field(description="List of warning signs identified in the conversation")
+    improvement_suggestions: list[str] = Field(description="List of suggestions for improving the response")
 
 # System prompt for the voice phishing simulation
 SYSTEM_PROMPT = """
@@ -53,6 +60,20 @@ You are acting as a phone scammer (보이스피싱 가해자), pretending to be 
 Follow the above instructions strictly to ensure the authenticity of the scenario and give user's a meaningful experience. Your response has to be in Korean and has to be in JSON format with the following fields: victim_name, scammer_name, relationship, continued_conversation, is_done.
 """
 
+FEEDBACK_PROMPT = """
+You are a voice phishing expert. You will be given a conversation between a victim and a scammer. Your task is to provide a detailed feedback on the response of victim. Analyze the conversation from the beginning to the last message, focusing on the victim's responses and potential risks.
+
+Evaluate the following aspects:
+1. Risk Level: Determine if the situation is high, medium, or low risk based on the victim's engagement
+2. Response Evaluation: Provide an overall assessment of how well the victim handled the situation
+3. Warning Signs: Identify any concerning behaviors or red flags in the victim's responses
+4. Improvement Suggestions: Offer specific recommendations for better handling similar situations
+
+Your feedback must be in Korean and in JSON format with the following fields: risk_level, response_evaluation, warning_signs (array), improvement_suggestions (array).
+
+Your answer has to be in Korean.
+"""
+
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Set page config
@@ -74,6 +95,8 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 if "chat_started" not in st.session_state:
     st.session_state.chat_started = False
+if "feedbacks" not in st.session_state:
+    st.session_state.feedbacks = []
 
 # Custom CSS for better styling
 st.markdown("""
@@ -205,16 +228,39 @@ elif page == "시뮬레이션 시작":
                 st.write(user_input)
             
             # Get AI response
-            response = client.beta.chat.completions.parse(
-                model="gpt-4o",
-                messages=st.session_state.messages,
-                response_format=PhishingConversation
+            response, feedback = await asyncio.gather(
+                client.beta.chat.completions.parse(
+                    model="gpt-4o",
+                    messages=st.session_state.messages,
+                    response_format=PhishingConversation
+                ),
+                client.beta.chat.completions.parse(
+                    model="gpt-4o", 
+                    messages=st.session_state.messages,
+                    response_format=Feedback
+                )
             )
-            
             ai_response = response.choices[0].message.parsed
             st.session_state.messages.append({"role": "assistant", "content": ai_response.continued_conversation})
             with st.chat_message("assistant", avatar="🤖"):
                 st.write(ai_response.continued_conversation)
+            
+            st.session_state.feedbacks.append(feedback.choices[0].message.parsed)
+            # Display feedback in a collapsible section
+            with st.expander("💡 실시간 피드백 보기", expanded=False):
+                if st.session_state.feedbacks:
+                    latest_feedback = st.session_state.feedbacks[-1]
+                    st.markdown("#### 대화 분석")
+                    st.markdown(f"**위험도:** {'🔴 높음' if latest_feedback.risk_level == 'high' else '🟡 중간' if latest_feedback.risk_level == 'medium' else '🟢 낮음'}")
+                    st.markdown(f"**대응 평가:** {latest_feedback.response_evaluation}")
+                    if latest_feedback.warning_signs:
+                        st.markdown("**주의해야 할 신호:**")
+                        for sign in latest_feedback.warning_signs:
+                            st.markdown(f"- {sign}")
+                    if latest_feedback.improvement_suggestions:
+                        st.markdown("**개선 제안:**")
+                        for suggestion in latest_feedback.improvement_suggestions:
+                            st.markdown(f"- {suggestion}")
         st.markdown('</div>', unsafe_allow_html=True)
 
 elif page == "통계 및 분석":

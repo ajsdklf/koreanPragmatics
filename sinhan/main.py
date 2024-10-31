@@ -71,7 +71,7 @@ Evaluate the following aspects:
 
 Your feedback must be in Korean and in JSON format with the following fields: risk_level, response_evaluation, warning_signs (array), improvement_suggestions (array).
 
-Your answer has to be in Korean.
+Your response always has to be **in Korean**.
 """
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))

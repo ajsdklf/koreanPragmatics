@@ -228,17 +228,15 @@ elif page == "시뮬레이션 시작":
                 st.write(user_input)
             
             # Get AI response
-            response, feedback = await asyncio.gather(
-                client.beta.chat.completions.parse(
-                    model="gpt-4o",
-                    messages=st.session_state.messages,
-                    response_format=PhishingConversation
-                ),
-                client.beta.chat.completions.parse(
-                    model="gpt-4o", 
-                    messages=st.session_state.messages,
-                    response_format=Feedback
-                )
+            response = client.beta.chat.completions.parse(
+                model="gpt-4o",
+                messages=st.session_state.messages,
+                response_format=PhishingConversation
+            )
+            feedback = client.beta.chat.completions.parse(
+                model="gpt-4o", 
+                messages=st.session_state.messages,
+                response_format=Feedback
             )
             ai_response = response.choices[0].message.parsed
             st.session_state.messages.append({"role": "assistant", "content": ai_response.continued_conversation})

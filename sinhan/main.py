@@ -246,7 +246,12 @@ elif page == "시뮬레이션 시작":
                 return feedback.choices[0].message.parsed
 
             async def get_responses(messages):
-                responses = await asyncio.gather(get_response(messages), get_feedback(messages))
+                feedback_messages = messages.copy()
+                feedback_messages[0] = {"role": "system", "content": FEEDBACK_PROMPT}
+                responses = await asyncio.gather(
+                    get_response(messages),
+                    get_feedback(feedback_messages)
+                )
                 return responses[0], responses[1]
 
             response, feedback = asyncio.run(get_responses(st.session_state.messages))

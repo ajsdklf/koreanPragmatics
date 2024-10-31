@@ -1,5 +1,5 @@
 import streamlit as st
-from openai import OpenAI
+from openai import OpenAI, AsyncOpenAI
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 import os
@@ -75,6 +75,7 @@ Your answer has to be in Korean.
 """
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client_async = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Set page config
 st.set_page_config(
@@ -227,23 +228,35 @@ elif page == "시뮬레이션 시작":
             with st.chat_message("user", avatar="👤"):
                 st.write(user_input)
             
-            # Get AI response
-            response = client.beta.chat.completions.parse(
-                model="gpt-4o",
-                messages=st.session_state.messages,
-                response_format=PhishingConversation
-            )
-            feedback = client.beta.chat.completions.parse(
-                model="gpt-4o", 
-                messages=st.session_state.messages,
-                response_format=Feedback
-            )
-            ai_response = response.choices[0].message.parsed
+            # Get AI response using asyncio
+            async def get_response(messages):
+                response = await client_async.beta.chat.completions.parse(
+                    model="gpt-4o",
+                    messages=messages,
+                    response_format=PhishingConversation
+                )
+                return response.choices[0].message.parsed
+
+            async def get_feedback(messages):
+                feedback = await client_async.beta.chat.completions.parse(
+                    model="gpt-4o",
+                    messages=messages, 
+                    response_format=Feedback
+                )
+                return feedback.choices[0].message.parsed
+
+            async def get_responses(messages):
+                responses = await asyncio.gather(get_response(messages), get_feedback(messages))
+                return responses[0], responses[1]
+
+            response, feedback = asyncio.run(get_responses(st.session_state.messages))
+
+            ai_response = response
             st.session_state.messages.append({"role": "assistant", "content": ai_response.continued_conversation})
             with st.chat_message("assistant", avatar="🤖"):
                 st.write(ai_response.continued_conversation)
             
-            st.session_state.feedbacks.append(feedback.choices[0].message.parsed)
+            st.session_state.feedbacks.append(feedback)
             # Display feedback in a collapsible section
             with st.expander("💡 실시간 피드백 보기", expanded=False):
                 if st.session_state.feedbacks:

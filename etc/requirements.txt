@@ -1,0 +1,12 @@
+numpy
+pandas
+streamlit
+openai
+anthropic
+python-dotenv
+torch
+matplotlib
+plotly
+langchain
+langchain-openai
+langgraph

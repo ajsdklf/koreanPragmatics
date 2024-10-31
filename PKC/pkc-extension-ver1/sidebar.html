@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PKC Sidebar</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="pkc-sidebar">
+    <h2>PKC Companion</h2>
+    <div id="activity-section">
+      <select id="activity-select">
+        <option value="">Select an activity</option>
+        <option value="research">Research</option>
+        <option value="learning">Learning</option>
+        <option value="planning">Planning</option>
+      </select>
+      <button id="start-button">Start Activity</button>
+    </div>
+    <div id="summary-section">
+      <h3>Page Summary</h3>
+      <div id="summary-content"></div>
+    </div>
+    <div id="memo-section">
+      <h3>Memos</h3>
+      <textarea id="memo-input" placeholder="Add a memo"></textarea>
+      <button id="add-memo-button">Add Memo</button>
+    </div>
+    <button id="end-activity-button">End Activity</button>
+  </div>
+  <script src="sidebar.js"></script>
+</body>
+</html>

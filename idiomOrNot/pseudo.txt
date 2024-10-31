@@ -1,0 +1,12 @@
+
+
+
+1. Based on the circumstances, User will be provided with two options they could choose from to continue the conversation.
+
+2. Both options will include idioms and one option will include a idiom with the right usage and one will include the wrong usage of the idiom.
+
+3. If user chosed the right option, the conversation will continue and a light explanation will be provided.
+
+4. If the user chosed a wrong option, conversation will be continued with the wrong option chosen. Since the wrong idiom was used, oponents will be angry at the innapropriate usage of idioms and mask an anger.
+
+5. Based on the Anger 표출되다 by opponent, user gets the chance to change their expression.

@@ -1,0 +1,7 @@
+langsmith
+langchain
+langchain-openai
+openai
+langgraph
+langchain-community
+ㅜ대4ㅓ
